@@ -1,3 +1,5 @@
+import os
+
 main_options = [1,2,3,4,5,6]
 help_options = [1,2,3,4,5]
 
@@ -11,19 +13,47 @@ def main_menu():
         print("5. Help - Provides instructions on how to use the different functions of the program")
         print("6. Quit - Exit the program")
 
-        choice = int(input("\nPlease choose an option>"))
+        choice = int(input("\nPlease choose an option: "))
 
         if choice in main_options:
             return choice
         else:
             print("\nError: That option is not recognized")
             print("Please try again\n")
+
 def add_screen():
-    print("Add the title: ")
-    print("Add the contents of the file: ")
-    print("Would you like to mark the file as a favorite?")
-    print("Enter 1 to mark as favorite. Enter 2 to not mark as favorite.")
-    print("Enter 1 to add the file. Enter 2 to cancel and return to the menu")
+    while True:
+        title = input("Add the title: ")
+        title = title + ''.join(".txt")
+        file = open(title, "w")    
+        content = input("Add the contents of the file: ")
+        file.write(content)
+        fav_choice = int(input("Enter 1 to add the file. Enter 2 to cancel and return to the menu: "))
+        if fav_choice == 1:
+            pass
+        elif fav_choice == 2:
+            file.close()
+            os.remove(title)
+            return
+        else:
+            print("\nError: That option is not recognized")
+            print("Please try again\n")
+        print("Would you like to mark the file as a favorite?")
+        print("Enter 1 to mark as favorite. Enter 2 to not mark as favorite")
+        print("Enter 1 to confirm the addition of the file. Enter 2 to cancel")
+
+def browse_screen():
+    print("Recent: ")
+    print("Enter 1 to sort entries by a certain filter")
+    print("You are currently on page #. Enter 2 to go to a certain page number")
+
+def edit_screen():
+    print("Text")
+
+def delete_screen():
+    title = input("Type in the file to delete (include the extension): ")
+
+    os.remove(title)
 def help_screen():
     while True:
         print("Help Screen Options:")
@@ -33,7 +63,7 @@ def help_screen():
         print("4. How to delete entries from the database")
         print("5. Return to main menu")
 
-        choice = int(input("\nPlease choose an option>"))
+        choice = int(input("\nPlease choose an option: "))
 
         if choice in help_options:
             if choice == 1:
