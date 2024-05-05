@@ -21,6 +21,8 @@ def main_menu():
 def add_screen():
     print("Add the title: ")
     print("Add the contents of the file: ")
+    print("Would you like to mark the file as a favorite?")
+    print("Enter 1 to mark as favorite. Enter 2 to not mark as favorite.")
     print("Enter 1 to add the file. Enter 2 to cancel and return to the menu")
 def help_screen():
     while True:
