@@ -18,7 +18,10 @@ def main_menu():
         else:
             print("\nError: That option is not recognized")
             print("Please try again\n")
-
+def add_screen():
+    print("Add the title: ")
+    print("Add the contents of the file: ")
+    print("Enter 1 to add the file. Enter 2 to cancel and return to the menu")
 def help_screen():
     while True:
         print("Help Screen Options:")
