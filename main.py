@@ -1,7 +1,9 @@
 import os
+from datetime import date
 
 main_options = [1,2,3,4,5,6]
 help_options = [1,2,3,4,5]
+edit_options = [1,2,3,4]
 browse_list = []
 
 def main_menu():
@@ -19,8 +21,7 @@ def main_menu():
         if choice in main_options:
             return choice
         else:
-            print("\nError: That option is not recognized")
-            print("Please try again\n")
+            invalid_input()
 
 def add_screen():
     while True:
@@ -37,17 +38,21 @@ def add_screen():
             os.remove(title)
             return
         print("Would you like to mark the file as a favorite?")
-        fav_choice = int(input("Enter 1 to mark as favorite. Enter 2 to not mark as favorite"))
-        if fav_choice == 1:
-            favorite = True
-        elif fav_choice == 2:
-            favorite = False
-        else:
-            print("\nError: That option is not recognized")
-            print("Please try again\n")
-        second_confirm = int(input("Enter 1 to confirm the addition of the file. Enter anything else to cancel"))
+        fav_choice = int(input("Enter 1 to mark as favorite. Enter 2 to not mark as favorite: "))
+        while True:
+            if fav_choice == 1:
+                favorite = True
+                break
+            elif fav_choice == 2:
+                favorite = False
+                break
+            else:
+                invalid_input()
+                break
+        second_confirm = int(input("Enter 1 to confirm the addition of the file. Enter anything else to cancel and return to the menu: "))
         if second_confirm == 1:
-            new_entry = [title, favorite]
+            file_date = date.today()
+            new_entry = [title, favorite, file_date]
             browse_list.append(new_entry)
         else:
             file.close()
@@ -60,7 +65,36 @@ def browse_screen():
     print("You are currently on page #. Enter 2 to go to a certain page number")
 
 def edit_screen():
-    print("Text")
+    while True:
+        current_file_name = input("Enter the title of the file: ")
+        print("1. Edit the title of the file")
+        print("2. Edit the contents of the file")
+        print("3. Edit the favorite option on the file")
+        print("4. Return to the main menu")
+
+        choice = int(input("\nPlease choose an option: "))
+        if choice == 1:
+            new_file_name = input("Enter the new file name")
+            os.rename(current_file_name, new_file_name)
+        elif choice == 2:
+            content_choice = input("Enter 1 to add onto the contents of the file. Enter 2 to overwrite the contents of the file.")
+            if content_choice == 1:
+                file = open(current_file_name, "a")
+                new_input = input("Enter the new text: ")
+                file.write(new_input)
+                file.close()
+            elif content_choice == 2:
+                file = open(current_file_name, "w")
+                new_input = input("Enter the new text: ")
+                file.write(new_input)
+                file.close()
+        elif choice == 3:
+            pass
+        elif choice == 4:
+            return
+        else:
+            invalid_input()
+    
 
 def delete_screen():
     title = input("Type in the file to delete (include the extension): ")
@@ -88,20 +122,31 @@ def help_screen():
             elif choice == 5:
                 return
         else:
-            print("\nError: That option is not recognized")
-            print("Please try again\n")
+            invalid_input()
 
 def add_help():
-    print("1. Add")
+    print("1. Add a title for the file.")
+    print("2. Add any text to the file")
+    print("3. You will get a confirmation message. Enter an input to verify whether you want to add the file or not")
+    print("4. You will be prompted to add the file as a favorite. Enter an input to verify if you want to add the file as a favorite or not")
+    print("5. A second confirmation message will pop up. Enter an input to verify whether you want to add the file or not.")
+    print("6. The file will be added to the array.")
 
 def browse_help():
-    print("1. Add")
+    print("1. The browse screen will show all the entries created thus far.")
+    print("2. Inputting 1 will allow you to sort the entries by certain filters.")
 
 def edit_help():
     print("1. Add")
 
 def delete_help():
-    print("1. Add")
+    print("1. Type in the name of the file. The extension must be included")
+    print("2. The file will be removed from the database.")
+
+def invalid_input():
+    print("\nError: That option is not recognized")
+    print("Please try again\n")
+    return
 
 choice = 0
 
@@ -117,5 +162,7 @@ while choice != 6:
         delete_screen()
     elif choice == 5:
         help_screen()
+    else:
+        invalid_input()
 
 print("\nTerminating Program")
