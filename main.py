@@ -2,6 +2,7 @@ import os
 
 main_options = [1,2,3,4,5,6]
 help_options = [1,2,3,4,5]
+browse_list = []
 
 def main_menu():
     while True:
@@ -28,19 +29,30 @@ def add_screen():
         file = open(title, "w")    
         content = input("Add the contents of the file: ")
         file.write(content)
-        fav_choice = int(input("Enter 1 to add the file. Enter 2 to cancel and return to the menu: "))
-        if fav_choice == 1:
+        first_confirm = int(input("Enter 1 to add the file. Enter anything else to cancel and return to the menu: "))
+        if first_confirm == 1:
             pass
-        elif fav_choice == 2:
+        else:
             file.close()
             os.remove(title)
             return
+        print("Would you like to mark the file as a favorite?")
+        fav_choice = int(input("Enter 1 to mark as favorite. Enter 2 to not mark as favorite"))
+        if fav_choice == 1:
+            favorite = True
+        elif fav_choice == 2:
+            favorite = False
         else:
             print("\nError: That option is not recognized")
             print("Please try again\n")
-        print("Would you like to mark the file as a favorite?")
-        print("Enter 1 to mark as favorite. Enter 2 to not mark as favorite")
-        print("Enter 1 to confirm the addition of the file. Enter 2 to cancel")
+        second_confirm = int(input("Enter 1 to confirm the addition of the file. Enter anything else to cancel"))
+        if second_confirm == 1:
+            new_entry = [title, favorite]
+            browse_list.append(new_entry)
+        else:
+            file.close()
+            os.remove(title)
+            return
 
 def browse_screen():
     print("Recent: ")
@@ -52,7 +64,6 @@ def edit_screen():
 
 def delete_screen():
     title = input("Type in the file to delete (include the extension): ")
-
     os.remove(title)
 def help_screen():
     while True:
