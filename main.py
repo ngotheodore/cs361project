@@ -5,6 +5,7 @@ main_options = [1,2,3,4,5,6]
 help_options = [1,2,3,4,5]
 edit_options = [1,2,3,4]
 browse_list = []
+recent_list = []
 
 def main_menu():
     while True:
@@ -54,15 +55,26 @@ def add_screen():
             file_date = date.today()
             new_entry = [title, favorite, file_date]
             browse_list.append(new_entry)
+            recent_list.append(new_entry)
+            return
         else:
             file.close()
             os.remove(title)
             return
 
 def browse_screen():
-    print("Recent: ")
-    print("Enter 1 to sort entries by a certain filter")
-    print("You are currently on page #. Enter 2 to go to a certain page number")
+    while True:
+        if (recent_list == False) or (browse_list == False):
+            print("No entries detected. Returning to main menu")
+            return
+        else:
+            print("Recent: ")
+            print(recent_list[0][0], recent_list[0][2])
+            print("Enter 1 to sort entries by a certain filter")
+            print("Entries:")
+            print(browse_list[0][0], browse_list[0][2])
+            return
+
 
 def edit_screen():
     while True:
@@ -74,8 +86,9 @@ def edit_screen():
 
         choice = int(input("\nPlease choose an option: "))
         if choice == 1:
-            new_file_name = input("Enter the new file name")
+            new_file_name = input("Enter the new file name: ")
             os.rename(current_file_name, new_file_name)
+            return
         elif choice == 2:
             content_choice = input("Enter 1 to add onto the contents of the file. Enter 2 to overwrite the contents of the file.")
             if content_choice == 1:
@@ -83,11 +96,13 @@ def edit_screen():
                 new_input = input("Enter the new text: ")
                 file.write(new_input)
                 file.close()
+                return
             elif content_choice == 2:
                 file = open(current_file_name, "w")
                 new_input = input("Enter the new text: ")
                 file.write(new_input)
                 file.close()
+                return
         elif choice == 3:
             pass
         elif choice == 4:
@@ -99,6 +114,8 @@ def edit_screen():
 def delete_screen():
     title = input("Type in the file to delete (include the extension): ")
     os.remove(title)
+    recent_list.pop()
+    browse_list.pop()
 def help_screen():
     while True:
         print("Help Screen Options:")
