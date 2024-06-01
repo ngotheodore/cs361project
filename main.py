@@ -69,11 +69,23 @@ def browse_screen():
             return
         else:
             print("Recent: ")
-            print(recent_list[0][0], recent_list[0][2])
-            print("Enter 1 to sort entries by a certain filter")
+            for i in recent_list:
+                print(recent_list[i][0], recent_list[i][2])
             print("Entries:")
-            print(browse_list[0][0], browse_list[0][2])
-            return
+            for i in browse_list:
+                print(browse_list[0][0], browse_list[0][2])
+            print("Enter 1 to sort entries by a certain filter")
+            print("Enter 2 to search for an entry in the database")
+            print("Enter 3 to quit")
+            choice = int(input("\nPlease choose an option: "))
+            if choice == 1:
+                sort_func()
+            elif choice == 2:
+                search_func()
+            elif choice == 3:
+                return
+            else:
+                invalid_input()
 
 
 def edit_screen():
@@ -104,7 +116,18 @@ def edit_screen():
                 file.close()
                 return
         elif choice == 3:
-            pass
+            print("Would you like to mark the file as a favorite?")
+            fav_choice = int(input("Enter 1 to mark as favorite. Enter 2 to not mark as favorite: "))
+            while True:
+                if fav_choice == 1:
+                    favorite = True
+                    break
+                elif fav_choice == 2:
+                    favorite = False
+                    break
+                else:
+                    invalid_input()
+                    break
         elif choice == 4:
             return
         else:
@@ -116,6 +139,7 @@ def delete_screen():
     os.remove(title)
     recent_list.pop()
     browse_list.pop()
+
 def help_screen():
     while True:
         print("Help Screen Options:")
@@ -164,6 +188,12 @@ def invalid_input():
     print("\nError: That option is not recognized")
     print("Please try again\n")
     return
+
+def sort_func():
+    pass
+
+def search_func():
+    pass
 
 choice = 0
 
