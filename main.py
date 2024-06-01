@@ -1,6 +1,10 @@
 import os
+import zmq
 from datetime import date
 
+context = zmq.Context()
+
+socket = context.socket(zmq.REQ)
 main_options = [1,2,3,4,5,6]
 help_options = [1,2,3,4,5]
 edit_options = [1,2,3,4]
@@ -52,10 +56,25 @@ def add_screen():
                 break
         second_confirm = int(input("Enter 1 to confirm the addition of the file. Enter anything else to cancel and return to the menu: "))
         if second_confirm == 1:
+            print("Would you like to add a password to the file?")
+            pass_choice = int(input("Enter 1 to add a password to the file. Enter 2 to create a file without a password"))
+            if pass_choice == 1:
+                pass_type = int(input("Enter 1 to add your own password or enter 2 to automatically generate your own password"))
+                if pass_type == 1:
+                    password = custom_pass()
+                elif pass_type == 2:
+                    pass
+                else:
+                    invalid_input()
+            elif pass_choice == 2:
+                has_pass = False
+                password = None
+            else:
+                invalid_input()
             file_date = date.today()
-            new_entry = [title, favorite, file_date]
+            new_entry = [title, favorite, file_date, has_pass, password]
             browse_list.append(new_entry)
-            recent_list.append(new_entry)
+            recent_list.append(new_entry)   
             return
         else:
             file.close()
@@ -194,6 +213,19 @@ def sort_func():
 
 def search_func():
     pass
+
+def custom_pass():
+    #confirm = False
+    while True:
+        password = input("Enter a password")
+        choice = int(input("Do you want to confirm this password? Type 1 to confirm, type 2 to try again"))
+        if choice == 1:
+            return password
+        elif choice == 2:
+            pass
+        else:
+            invalid_input()
+            
 
 choice = 0
 
