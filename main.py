@@ -63,7 +63,7 @@ def add_screen():
                 if pass_type == 1:
                     password = custom_pass()
                 elif pass_type == 2:
-                    pass
+                    password = auto_pass()
                 else:
                     invalid_input()
             elif pass_choice == 2:
@@ -225,6 +225,9 @@ def custom_pass():
             pass
         else:
             invalid_input()
+
+def auto_pass():
+    pass
             
 
 choice = 0
