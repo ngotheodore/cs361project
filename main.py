@@ -41,7 +41,6 @@ def add_screen():
         while title_confirm == "No":
             title = input("Add the title: ")
             socket_c.send(bytes(title, encoding='utf-8'))
-            #socket_c.send_string(title)
             title_confirm = socket_c.recv()
             title_confirm = title_confirm.decode()
             if title_confirm == "No":
@@ -52,6 +51,7 @@ def add_screen():
             content = input("Add the contents of the file: ")
             socket_d.send(bytes(content, encoding='utf-8'))
             char_confirm = socket_d.recv()
+            char_confirm = char_confirm.decode()
             if char_confirm == "No":
                 print("File exceeds character limit")
         file.write(content)
@@ -77,9 +77,9 @@ def add_screen():
         second_confirm = int(input("Enter 1 to confirm the addition of the file. Enter anything else to cancel and return to the menu: "))
         if second_confirm == 1:
             print("Would you like to add a password to the file?")
-            pass_choice = int(input("Enter 1 to add a password to the file. Enter 2 to create a file without a password"))
+            pass_choice = int(input("Enter 1 to add a password to the file. Enter 2 to create a file without a password: "))
             if pass_choice == 1:
-                pass_type = int(input("Enter 1 to add your own password or enter 2 to automatically generate your own password"))
+                pass_type = int(input("Enter 1 to add your own password or enter 2 to automatically generate your own password: "))
                 if pass_type == 1:
                     password = custom_pass()
                     has_pass = True
@@ -251,12 +251,13 @@ def custom_pass():
     confirm = "No"
     while True:
         while confirm == "No":
-            password = input("Enter a password. The password must be at least 10 characters long")
+            password = input("Enter a password. The password must be at least 10 characters long: ")
             socket_b.send(bytes(password, encoding='utf-8'))
             confirm = socket_b.recv()
+            confirm = confirm.decode()
             if confirm == "No":
                 print("Password does not meet length requirement")
-        choice = int(input("Do you want to confirm this password? Type 1 to confirm, type 2 to try again"))
+        choice = int(input("Do you want to confirm this password? Type 1 to confirm, type 2 to try again: "))
         if choice == 1:
             return password
         elif choice == 2:

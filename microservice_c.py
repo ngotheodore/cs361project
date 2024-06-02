@@ -22,12 +22,9 @@ while True:
 
     for i in message:
         if i in char_list:
-            #socket.send(bytes("No", encoding='utf-8'))
             socket.send(b"No")
             break
         elif char_count == len(message) - 1:
             socket.send(b"Yes")
             break
         char_count += 1
-    #socket.send(bytes("Yes", encoding='utf-8'))
-    #socket.send(b"Yes")
