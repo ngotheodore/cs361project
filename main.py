@@ -4,8 +4,9 @@ from datetime import date
 
 context = zmq.Context()
 
-socket = context.socket(zmq.REQ)
-main_options = [1,2,3,4,5,6]
+socket_b = context.socket(zmq.REQ)
+socket_b.connect("tcp://localhost:5556")
+main_options = [1,2,3,4,5,6,7]
 help_options = [1,2,3,4,5]
 edit_options = [1,2,3,4]
 browse_list = []
@@ -19,7 +20,8 @@ def main_menu():
         print("3. Edit - Edit an entry in the database")
         print("4. Delete - Delete an entry in the database")
         print("5. Help - Provides instructions on how to use the different functions of the program")
-        print("6. Quit - Exit the program")
+        print("6. Password Manager - Manage passwords of files as an administrator")
+        print("7. Quit - Exit the program")
 
         choice = int(input("\nPlease choose an option: "))
 
@@ -62,8 +64,10 @@ def add_screen():
                 pass_type = int(input("Enter 1 to add your own password or enter 2 to automatically generate your own password"))
                 if pass_type == 1:
                     password = custom_pass()
+                    has_pass = True
                 elif pass_type == 2:
                     password = auto_pass()
+                    has_pass = True
                 else:
                     invalid_input()
             elif pass_choice == 2:
@@ -74,7 +78,8 @@ def add_screen():
             file_date = date.today()
             new_entry = [title, favorite, file_date, has_pass, password]
             browse_list.append(new_entry)
-            recent_list.append(new_entry)   
+            recent_list.append(new_entry)
+            socket_b.send(new_entry)   
             return
         else:
             file.close()
@@ -184,6 +189,9 @@ def help_screen():
         else:
             invalid_input()
 
+def pass_manager():
+    pass
+
 def add_help():
     print("1. Add a title for the file.")
     print("2. Add any text to the file")
@@ -232,7 +240,7 @@ def auto_pass():
 
 choice = 0
 
-while choice != 6:
+while choice != 7:
     choice = main_menu()
     if choice == 1:
         add_screen()
@@ -244,6 +252,8 @@ while choice != 6:
         delete_screen()
     elif choice == 5:
         help_screen()
+    elif choice == 6:
+        pass_manager()
     else:
         invalid_input()
 
