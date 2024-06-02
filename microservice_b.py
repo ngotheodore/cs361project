@@ -15,4 +15,9 @@ while True:
 
     time.sleep(1)
 
+    if len(message) >= 10:
+        socket.send(True)
+    else:
+        socket.send(False)
+
     

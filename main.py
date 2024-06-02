@@ -6,6 +6,10 @@ context = zmq.Context()
 
 socket_b = context.socket(zmq.REQ)
 socket_b.connect("tcp://localhost:5556")
+socket_c = context.socket(zmq.REQ)
+socket_c.connect("tcp://localhost:5557")
+socket_d = context.socket(zmq.REQ)
+socket_d.connect("tcp://localhost:5558")
 main_options = [1,2,3,4,5,6,7]
 help_options = [1,2,3,4,5]
 edit_options = [1,2,3,4]
@@ -31,11 +35,23 @@ def main_menu():
             invalid_input()
 
 def add_screen():
+    title_confirm = False
+    char_confirm = False
     while True:
-        title = input("Add the title: ")
+        while title_confirm == False:
+            title = input("Add the title: ")
+            socket_c.send(password)
+            title_confirm = socket_c.recv()
+            if title_confirm == False:
+                invalid_input()
         title = title + ''.join(".txt")
         file = open(title, "w")    
-        content = input("Add the contents of the file: ")
+        while char_confirm == False:
+            content = input("Add the contents of the file: ")
+            socket_d.send(content)
+            char_confirm = socket_d.recv()
+            if char_confirm == False:
+                invalid_input()
         file.write(content)
         first_confirm = int(input("Enter 1 to add the file. Enter anything else to cancel and return to the menu: "))
         if first_confirm == 1:
@@ -79,7 +95,6 @@ def add_screen():
             new_entry = [title, favorite, file_date, has_pass, password]
             browse_list.append(new_entry)
             recent_list.append(new_entry)
-            socket_b.send(new_entry)   
             return
         else:
             file.close()
@@ -223,9 +238,14 @@ def search_func():
     pass
 
 def custom_pass():
-    #confirm = False
+    confirm = False
     while True:
-        password = input("Enter a password")
+        while confirm == False:
+            password = input("Enter a password. The password must be at least 10 characters long")
+            socket_b.send(password)
+            confirm = socket_b.recv()
+            if confirm == False:
+                invalid_input()
         choice = int(input("Do you want to confirm this password? Type 1 to confirm, type 2 to try again"))
         if choice == 1:
             return password
