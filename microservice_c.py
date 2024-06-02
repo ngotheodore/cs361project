@@ -18,13 +18,16 @@ while True:
 
     time.sleep(1)
 
+    char_count = 0
+
     for i in message:
         if i in char_list:
             #socket.send(bytes("No", encoding='utf-8'))
             socket.send(b"No")
             break
-        elif i == len(message) - 1:
+        elif char_count == len(message) - 1:
             socket.send(b"Yes")
             break
+        char_count += 1
     #socket.send(bytes("Yes", encoding='utf-8'))
     #socket.send(b"Yes")

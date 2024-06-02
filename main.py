@@ -44,14 +44,13 @@ def add_screen():
             #socket_c.send_string(title)
             title_confirm = socket_c.recv()
             title_confirm = title_confirm.decode()
-            print(title_confirm)
             if title_confirm == "No":
                 print("Invalid character detected in title")
         title = title + ''.join(".txt")
         file = open(title, "w")    
         while char_confirm == "No":
             content = input("Add the contents of the file: ")
-            socket_d.send(content)
+            socket_d.send(bytes(content, encoding='utf-8'))
             char_confirm = socket_d.recv()
             if char_confirm == "No":
                 print("File exceeds character limit")
@@ -253,7 +252,7 @@ def custom_pass():
     while True:
         while confirm == "No":
             password = input("Enter a password. The password must be at least 10 characters long")
-            socket_b.send(password)
+            socket_b.send(bytes(password, encoding='utf-8'))
             confirm = socket_b.recv()
             if confirm == "No":
                 print("Password does not meet length requirement")
