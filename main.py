@@ -35,22 +35,25 @@ def main_menu():
             invalid_input()
 
 def add_screen():
-    title_confirm = False
-    char_confirm = False
+    title_confirm = "No"
+    char_confirm = "No"
     while True:
-        while title_confirm == False:
+        while title_confirm == "No":
             title = input("Add the title: ")
-            socket_c.send(password)
+            socket_c.send(bytes(title, encoding='utf-8'))
+            #socket_c.send_string(title)
             title_confirm = socket_c.recv()
-            if title_confirm == False:
+            title_confirm = title_confirm.decode()
+            print(title_confirm)
+            if title_confirm == "No":
                 print("Invalid character detected in title")
         title = title + ''.join(".txt")
         file = open(title, "w")    
-        while char_confirm == False:
+        while char_confirm == "No":
             content = input("Add the contents of the file: ")
             socket_d.send(content)
             char_confirm = socket_d.recv()
-            if char_confirm == False:
+            if char_confirm == "No":
                 print("File exceeds character limit")
         file.write(content)
         first_confirm = int(input("Enter 1 to add the file. Enter anything else to cancel and return to the menu: "))
@@ -246,13 +249,13 @@ def search_func():
     pass
 
 def custom_pass():
-    confirm = False
+    confirm = "No"
     while True:
-        while confirm == False:
+        while confirm == "No":
             password = input("Enter a password. The password must be at least 10 characters long")
             socket_b.send(password)
             confirm = socket_b.recv()
-            if confirm == False:
+            if confirm == "No":
                 print("Password does not meet length requirement")
         choice = int(input("Do you want to confirm this password? Type 1 to confirm, type 2 to try again"))
         if choice == 1:

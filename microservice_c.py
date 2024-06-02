@@ -13,12 +13,18 @@ socket.bind("tcp://*:5557")
 
 while True:
     message = socket.recv()
+    message = message.decode()
     print(f"Received request: {message}")
 
     time.sleep(1)
 
     for i in message:
         if i in char_list:
-            socket.send(False)
-        else:
-            socket.send(True)
+            #socket.send(bytes("No", encoding='utf-8'))
+            socket.send(b"No")
+            break
+        elif i == len(message) - 1:
+            socket.send(b"Yes")
+            break
+    #socket.send(bytes("Yes", encoding='utf-8'))
+    #socket.send(b"Yes")

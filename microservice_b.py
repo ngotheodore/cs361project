@@ -16,8 +16,8 @@ while True:
     time.sleep(1)
 
     if len(message) >= 10:
-        socket.send(True)
+        socket.send(b"Yes")
     else:
-        socket.send(False)
+        socket.send(b"No")
 
     
