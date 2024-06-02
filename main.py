@@ -43,7 +43,7 @@ def add_screen():
             socket_c.send(password)
             title_confirm = socket_c.recv()
             if title_confirm == False:
-                invalid_input()
+                print("Invalid character detected in title")
         title = title + ''.join(".txt")
         file = open(title, "w")    
         while char_confirm == False:
@@ -51,7 +51,7 @@ def add_screen():
             socket_d.send(content)
             char_confirm = socket_d.recv()
             if char_confirm == False:
-                invalid_input()
+                print("File exceeds character limit")
         file.write(content)
         first_confirm = int(input("Enter 1 to add the file. Enter anything else to cancel and return to the menu: "))
         if first_confirm == 1:
@@ -186,7 +186,8 @@ def help_screen():
         print("2. Browse screen features")
         print("3. Editing features")
         print("4. How to delete entries from the database")
-        print("5. Return to main menu")
+        print("5. File Constraints")
+        print("6. Return to main menu")
 
         choice = int(input("\nPlease choose an option: "))
 
@@ -200,6 +201,8 @@ def help_screen():
             elif choice == 4:
                 delete_help()
             elif choice == 5:
+                constraint_help()
+            elif choice == 6:
                 return
         else:
             invalid_input()
@@ -226,6 +229,11 @@ def delete_help():
     print("1. Type in the name of the file. The extension must be included")
     print("2. The file will be removed from the database.")
 
+def constraint_help():
+    print("1. File titles cannot have the following characters: !@#$%^&*")
+    print("2. Files have a character limit of 100 characters")
+    print("3. File passwords must be at least be 10 characters long")
+
 def invalid_input():
     print("\nError: That option is not recognized")
     print("Please try again\n")
@@ -245,7 +253,7 @@ def custom_pass():
             socket_b.send(password)
             confirm = socket_b.recv()
             if confirm == False:
-                invalid_input()
+                print("Password does not meet length requirement")
         choice = int(input("Do you want to confirm this password? Type 1 to confirm, type 2 to try again"))
         if choice == 1:
             return password
