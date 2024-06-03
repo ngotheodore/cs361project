@@ -114,9 +114,9 @@ def browse_screen():
                 print(recent_list[i][0], recent_list[i][2])
             print("Entries:")
             for i in browse_list:
-                print(browse_list[0][0], browse_list[0][2])
-            print("Enter 1 to sort entries by a certain filter")
-            print("Enter 2 to search for an entry in the database")
+                print(browse_list[i][0], browse_list[i][2])
+            #print("Enter 1 to sort entries by a certain filter")
+            #print("Enter 2 to search for an entry in the database")
             print("Enter 3 to quit")
             choice = int(input("\nPlease choose an option: "))
             if choice == 1:
