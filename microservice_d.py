@@ -17,7 +17,7 @@ while True:
 
     time.sleep(1)
 
-    if len(message) > 100:
+    if len(message) > 2000:
         socket.send(b"No")
         #break
     else:

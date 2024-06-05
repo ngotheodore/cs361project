@@ -1,5 +1,6 @@
 import os
 import zmq
+import requests
 from datetime import date
 
 context = zmq.Context()
@@ -10,7 +11,7 @@ socket_c = context.socket(zmq.REQ)
 socket_c.connect("tcp://localhost:5557")
 socket_d = context.socket(zmq.REQ)
 socket_d.connect("tcp://localhost:5558")
-main_options = [1,2,3,4,5,6,7]
+main_options = [1,2,3,4,5,6]
 help_options = [1,2,3,4,5]
 edit_options = [1,2,3,4]
 browse_list = []
@@ -24,8 +25,7 @@ def main_menu():
         print("3. Edit - Edit an entry in the database")
         print("4. Delete - Delete an entry in the database")
         print("5. Help - Provides instructions on how to use the different functions of the program")
-        print("6. Password Manager - Manage passwords of files as an administrator")
-        print("7. Quit - Exit the program")
+        print("6. Quit - Exit the program")
 
         choice = int(input("\nPlease choose an option: "))
 
@@ -46,14 +46,18 @@ def add_screen():
             if title_confirm == "No":
                 print("Invalid character detected in title")
         title = title + ''.join(".txt")
-        file = open(title, "w")    
-        while char_confirm == "No":
-            content = input("Add the contents of the file: ")
-            socket_d.send(bytes(content, encoding='utf-8'))
-            char_confirm = socket_d.recv()
-            char_confirm = char_confirm.decode()
-            if char_confirm == "No":
-                print("File exceeds character limit")
+        file = open(title, "w")
+        text_choice = input("Would you like to add your own text or automatically generate text? Type 1 for yes, 2 for no: ")
+        if text_choice == 1:
+            content = auto_text()
+        elif text_choice == 2:
+            while char_confirm == "No":
+                content = input("Add the contents of the file: ")
+                socket_d.send(bytes(content, encoding='utf-8'))
+                char_confirm = socket_d.recv()
+                char_confirm = char_confirm.decode()
+                if char_confirm == "No":
+                    print("File exceeds character limit")
         file.write(content)
         first_confirm = int(input("Enter 1 to add the file. Enter anything else to cancel and return to the menu: "))
         if first_confirm == 1:
@@ -73,7 +77,7 @@ def add_screen():
                 break
             else:
                 invalid_input()
-                break
+                return
         second_confirm = int(input("Enter 1 to confirm the addition of the file. Enter anything else to cancel and return to the menu: "))
         if second_confirm == 1:
             print("Would you like to add a password to the file?")
@@ -209,9 +213,6 @@ def help_screen():
         else:
             invalid_input()
 
-def pass_manager():
-    pass
-
 def add_help():
     print("1. Add a title for the file.")
     print("2. Add any text to the file")
@@ -240,6 +241,11 @@ def invalid_input():
     print("\nError: That option is not recognized")
     print("Please try again\n")
     return
+
+def auto_text():
+    response = requests.get('http://localhost:5001/facts')
+    data = response.json()
+    return data
 
 def sort_func():
     pass
@@ -283,8 +289,6 @@ while choice != 7:
         delete_screen()
     elif choice == 5:
         help_screen()
-    elif choice == 6:
-        pass_manager()
     else:
         invalid_input()
 
