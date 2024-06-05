@@ -37,6 +37,7 @@ def main_menu():
 def add_screen():
     title_confirm = "No"
     char_confirm = "No"
+    content = ""
     while True:
         while title_confirm == "No":
             title = input("Add the title: ")
@@ -50,6 +51,8 @@ def add_screen():
         text_choice = input("Would you like to add your own text or automatically generate text? Type 1 for yes, 2 for no: ")
         if text_choice == 1:
             content = auto_text()
+            #content = str(content)
+            #print(content)
         elif text_choice == 2:
             while char_confirm == "No":
                 content = input("Add the contents of the file: ")
@@ -277,7 +280,7 @@ def auto_pass():
 
 choice = 0
 
-while choice != 7:
+while choice != 6:
     choice = main_menu()
     if choice == 1:
         add_screen()
