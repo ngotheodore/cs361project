@@ -48,11 +48,10 @@ def add_screen():
                 print("Invalid character detected in title")
         title = title + ''.join(".txt")
         file = open(title, "w")
-        text_choice = input("Would you like to add your own text or automatically generate text? Type 1 for yes, 2 for no: ")
+        text_choice = int(input("Would you like to add your own text or automatically generate text? Type 1 for yes, 2 for no: "))
         if text_choice == 1:
             content = auto_text()
-            #content = str(content)
-            #print(content)
+            content = str(content)
         elif text_choice == 2:
             while char_confirm == "No":
                 content = input("Add the contents of the file: ")
@@ -86,7 +85,7 @@ def add_screen():
             print("Would you like to add a password to the file?")
             pass_choice = int(input("Enter 1 to add a password to the file. Enter 2 to create a file without a password: "))
             if pass_choice == 1:
-                pass_type = int(input("Enter 1 to add your own password or enter 2 to automatically generate your own password: "))
+                pass_type = int(input("Enter 1 to add your own password: "))
                 if pass_type == 1:
                     password = custom_pass()
                     has_pass = True
@@ -118,10 +117,12 @@ def browse_screen():
         else:
             print("Recent: ")
             for i in recent_list:
-                print(recent_list[i][0], recent_list[i][2])
+                for j in range(i):
+                    print(recent_list[j][0], recent_list[j][2])
             print("Entries:")
             for i in browse_list:
-                print(browse_list[i][0], browse_list[i][2])
+                for j in range(i):
+                    print(browse_list[j][0], browse_list[j][2])
             #print("Enter 1 to sort entries by a certain filter")
             #print("Enter 2 to search for an entry in the database")
             print("Enter 3 to quit")
@@ -277,22 +278,23 @@ def custom_pass():
 def auto_pass():
     pass
             
+if __name__ == '__main__':
 
-choice = 0
+    choice = 0
 
-while choice != 6:
-    choice = main_menu()
-    if choice == 1:
-        add_screen()
-    elif choice == 2:
-        browse_screen()
-    elif choice == 3:
-        edit_screen()
-    elif choice == 4:
-        delete_screen()
-    elif choice == 5:
-        help_screen()
-    else:
-        invalid_input()
+    while choice != 6:
+        choice = main_menu()
+        if choice == 1:
+            add_screen()
+        elif choice == 2:
+            browse_screen()
+        elif choice == 3:
+            edit_screen()
+        elif choice == 4:
+            delete_screen()
+        elif choice == 5:
+            help_screen()
+        else:
+            invalid_input()
 
-print("\nTerminating Program")
+    print("\nTerminating Program")
